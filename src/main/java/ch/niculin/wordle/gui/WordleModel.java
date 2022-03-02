@@ -172,4 +172,14 @@ public class WordleModel {
         }
         return true;
     }
+
+    public boolean gameCanContinue() {
+         if (Position.getInstance().plusOneRound()){
+             Position.getInstance().resetPosition();
+             return true;
+         } else {
+             return false;
+         }
+
+    }
 }

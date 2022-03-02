@@ -19,13 +19,9 @@ public class EnterActionListener implements ActionListener {
             view.colorLabels(model.validateCurrentWord(view.getWord()));
         }
         else {
-            view.getToShortLabel().setVisible(true);
             view.colorLabels(model.removeAll());
-            Position.getInstance().minusOneRound();
         }
-        if (Position.getInstance().plusOneRound()){
-            Position.getInstance().resetPosition();
-        } else {
+        if (!model.gameCanContinue()){
             view.getEndLabel().setVisible(true);
         }
     }

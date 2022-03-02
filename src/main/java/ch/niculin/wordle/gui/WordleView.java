@@ -418,6 +418,8 @@ public class WordleView {
         } else {
             if (volumeOfLetters.contains("__")) {
                 removeAll();
+                getToShortLabel().setVisible(true);
+                Position.getInstance().minusOneRound();
             } else{
                 getToShortLabel().setVisible(false);
                 for (int i = 0; i <= 4; i++) {
