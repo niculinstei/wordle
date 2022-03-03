@@ -16,10 +16,10 @@ public class EnterActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (model.wordIsValid(view.getWord())){
-            view.colorLabels(model.validateCurrentWord(view.getWord()));
+            view.colorLabels(model.rateCurrentWord(view.getWord()));
         }
         else {
-            view.colorLabels(model.removeAll());
+            view.colorLabels(model.removeAllLettersOfCurrentRow());
         }
         if (!model.gameCanContinue()){
             view.getEndLabel().setVisible(true);

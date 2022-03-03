@@ -34,24 +34,18 @@ public class WordCheckerImpl implements WordChecker {
             }
 
              if (solutionAsListOfString.contains(wordAsListOfStrings.get(i)) && !word.getWord().get(i).getState().equals(State.CORRECT))
-                word.getWord().get(i).setState(State.SEMICORRECT);
+                word.getWord().get(i).setState(State.SEMI_CORRECT);
             }
 
         return word;
     }
 
     private Word returnSuccess(Word word) {
-        word.setState(State.FINISHED);
+        for(Letter letter: word.getWord()){
+            letter.setState(State.CORRECT);
+        }
         return word;
     }
-
-    /**
-     * check the word in controller, before call the methode checkUserInput
-     *
-     * @return
-     */
-
-
 }
 
 

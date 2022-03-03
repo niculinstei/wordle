@@ -2,8 +2,7 @@ package ch.niculin.wordle.gui;
 
 public enum State {
     WRONG,
-    SEMICORRECT,
+    SEMI_CORRECT,
     CORRECT,
     NOTHING,
-    FINISHED,
 }

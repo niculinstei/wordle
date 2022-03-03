@@ -1,12 +1,12 @@
 package ch.niculin.wordle.gui;
 
 public class Letter {
-    private  String volume;
+    private  String letter;
     private  State state;
 
-    public Letter (String volume, State state){
+    public Letter (String letter, State state){
         this.state = state;
-        this.volume = volume;
+        this.letter = letter;
     }
 
 
@@ -14,15 +14,19 @@ public class Letter {
         return state;
     }
 
-    public String getVolume() {
-        return volume;
+    public String getLetter() {
+        return letter;
     }
 
-    public void setVolume(String volume) {
-        this.volume = volume;
+    public void setLetter(String volume) {
+        this.letter = volume;
     }
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public boolean isValid() {
+        return !letter.equals("__");
     }
 }

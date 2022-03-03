@@ -298,36 +298,35 @@ public class WordleView {
 
     public void setLetter(Letter letter) {
         var index = Position.getInstance().getPosition();
-        getCurrentRow().get(index).setText(letter.getVolume());
+        getCurrentRow().get(index).setText(letter.getLetter());
     }
 
     public void deleteLetter(Letter letter) {
         var index = Position.getInstance().getPosition();
-        getCurrentRow().get(index).setText(letter.getVolume());
+        getCurrentRow().get(index).setText(letter.getLetter());
     }
 
     private List<JLabel> getCurrentRow() {
         switch (Position.getInstance().getRound()) {
-            case 1: {
+            case 1 -> {
                 return fieldsToFillTry1;
             }
-            case 2: {
+            case 2 -> {
                 return fieldsToFillTry2;
             }
-            case 3: {
+            case 3 -> {
                 return fieldsToFillTry3;
             }
-            case 4: {
+            case 4 -> {
                 return fieldsToFillTry4;
             }
-            case 5: {
+            case 5 -> {
                 return fieldsToFillTry5;
             }
-            case 6: {
+            case 6 -> {
                 return fieldsToFillTry6;
             }
-
-            default: {
+            default -> {
                 return new ArrayList<>();
             }
         }
@@ -411,7 +410,7 @@ public class WordleView {
         List<State> statesOfLetters = word.getWordStates();
         List<String> volumeOfLetters = word.getWordVolume();
 
-        if (!statesOfLetters.contains(State.WRONG) && !statesOfLetters.contains(State.SEMICORRECT) && !statesOfLetters.contains(State.NOTHING)){
+        if (!statesOfLetters.contains(State.WRONG) && !statesOfLetters.contains(State.SEMI_CORRECT) && !statesOfLetters.contains(State.NOTHING)){
             winPanel.setVisible(true);
             topPanel.setVisible(false);
             bottomPanel.setVisible(false);
@@ -431,7 +430,7 @@ public class WordleView {
                             getButtonToColour(getCurrentRow().get(i).getText()).setBackground(Color.red);
                             getButtonToColour(getCurrentRow().get(i).getText()).setOpaque(true);
                         }
-                    } else if (statesOfLetters.get(i) == State.SEMICORRECT) {
+                    } else if (statesOfLetters.get(i) == State.SEMI_CORRECT) {
                         getCurrentRow().get(i).setBackground(Color.ORANGE);
                         getCurrentRow().get(i).setOpaque(true);
 
@@ -460,62 +459,35 @@ public class WordleView {
     }
 
     private JButton getButtonToColour(String letter) {
-        switch (letter) {
-            case "A":
-                return aButton;
-            case "B":
-                return bButton;
-            case "C":
-                return cButton;
-            case "D":
-                return dButton;
-            case "E":
-                return eButton;
-            case "F":
-                return fButton;
-            case "G":
-                return gButton;
-            case "H":
-                return hButton;
-            case "I":
-                return iButton;
-            case "J":
-                return jButton;
-            case "K":
-                return kButton;
-            case "L":
-                return lButton;
-            case "M":
-                return mButton;
-            case "N":
-                return nButton;
-            case "O":
-                return oButton;
-            case "P":
-                return pButton;
-            case "Q":
-                return qButton;
-            case "R":
-                return rButton;
-            case "S":
-                return sButton;
-            case "T":
-                return tButton;
-            case "U":
-                return uButton;
-            case "V":
-                return vButton;
-            case "W":
-                return wButton;
-            case "X":
-                return xButton;
-            case "Y":
-                return yButton;
-            case "Z":
-                return zButton;
-            default:
-                return new JButton();
-        }
+        return switch (letter) {
+            case "A" -> aButton;
+            case "B" -> bButton;
+            case "C" -> cButton;
+            case "D" -> dButton;
+            case "E" -> eButton;
+            case "F" -> fButton;
+            case "G" -> gButton;
+            case "H" -> hButton;
+            case "I" -> iButton;
+            case "J" -> jButton;
+            case "K" -> kButton;
+            case "L" -> lButton;
+            case "M" -> mButton;
+            case "N" -> nButton;
+            case "O" -> oButton;
+            case "P" -> pButton;
+            case "Q" -> qButton;
+            case "R" -> rButton;
+            case "S" -> sButton;
+            case "T" -> tButton;
+            case "U" -> uButton;
+            case "V" -> vButton;
+            case "W" -> wButton;
+            case "X" -> xButton;
+            case "Y" -> yButton;
+            case "Z" -> zButton;
+            default -> new JButton();
+        };
     }
 
     private void createUIComponents() {
