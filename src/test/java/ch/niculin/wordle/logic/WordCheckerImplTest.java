@@ -1,6 +1,5 @@
 package ch.niculin.wordle.logic;
 
-import ch.niculin.wordle.gui.Word;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

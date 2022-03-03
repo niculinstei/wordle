@@ -1,8 +1,8 @@
-package ch.niculin.wordle.gui;
+package ch.niculin.wordle.logic;
 
 public class Letter {
     private  String letter;
-    private  State state;
+    private State state;
 
     public Letter (String letter, State state){
         this.state = state;

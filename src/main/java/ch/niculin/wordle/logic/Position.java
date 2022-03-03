@@ -1,4 +1,4 @@
-package ch.niculin.wordle.gui;
+package ch.niculin.wordle.logic;
 
 public class Position {
     private static Position INSTANCE;

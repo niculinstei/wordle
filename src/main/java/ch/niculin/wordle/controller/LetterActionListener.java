@@ -1,4 +1,7 @@
-package ch.niculin.wordle.gui;
+package ch.niculin.wordle.controller;
+
+import ch.niculin.wordle.gui.WordleView;
+import ch.niculin.wordle.logic.WordleModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

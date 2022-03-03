@@ -1,5 +1,10 @@
 package ch.niculin.wordle.gui;
 
+import ch.niculin.wordle.logic.Letter;
+import ch.niculin.wordle.logic.Position;
+import ch.niculin.wordle.logic.State;
+import ch.niculin.wordle.logic.Word;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;

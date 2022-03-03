@@ -1,4 +1,4 @@
-package ch.niculin.wordle.gui;
+package ch.niculin.wordle.logic;
 
 public interface WordChecker {
     Word checkUserWordInput (Word word);

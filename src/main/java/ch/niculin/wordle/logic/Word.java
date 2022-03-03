@@ -1,4 +1,4 @@
-package ch.niculin.wordle.gui;
+package ch.niculin.wordle.logic;
 
 import java.util.ArrayList;
 import java.util.List;

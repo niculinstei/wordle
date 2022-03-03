@@ -1,10 +1,5 @@
 package ch.niculin.wordle.logic;
 
-import ch.niculin.wordle.gui.Letter;
-import ch.niculin.wordle.gui.State;
-import ch.niculin.wordle.gui.Word;
-import ch.niculin.wordle.gui.WordChecker;
-
 import java.util.List;
 
 public class WordCheckerImpl implements WordChecker {

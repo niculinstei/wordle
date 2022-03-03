@@ -1,8 +1,11 @@
-package ch.niculin.wordle.gui;
+package ch.niculin.wordle.controller;
+
+import ch.niculin.wordle.gui.*;
+import ch.niculin.wordle.logic.WordleModel;
 
 public class WordleController {
-    private WordleView theView;
-    private WordleModel theModel;
+    private final WordleView theView;
+    private final WordleModel theModel;
 
     public WordleController(WordleView theView, WordleModel theModel) {
         this.theView = theView;
