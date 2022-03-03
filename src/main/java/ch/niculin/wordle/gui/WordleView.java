@@ -408,48 +408,57 @@ public class WordleView {
 
     public void colorLabels(Word word) {
         List<State> statesOfLetters = word.getWordStates();
+        //TODO allenfalls letter verwenden --> list of letters
         List<String> volumeOfLetters = word.getWordVolume();
-
-        if (!statesOfLetters.contains(State.WRONG) && !statesOfLetters.contains(State.SEMI_CORRECT) && !statesOfLetters.contains(State.NOTHING)){
+        if (word.isWordTheWinningWord()){
             winPanel.setVisible(true);
             topPanel.setVisible(false);
             bottomPanel.setVisible(false);
         } else {
-            if (volumeOfLetters.contains("__")) {
-                removeAll();
-                getToShortLabel().setVisible(true);
-                Position.getInstance().minusOneRound();
-            } else{
-                getToShortLabel().setVisible(false);
-                for (int i = 0; i <= 4; i++) {
-                    if (statesOfLetters.get(i) == State.WRONG) {
-                        getCurrentRow().get(i).setBackground(Color.red);
-                        getCurrentRow().get(i).setOpaque(true);
-                        Color color = getButtonToColour(getCurrentRow().get(i).getText()).getBackground();
-                        if (color.equals(new Color(252, 250, 255))) {
-                            getButtonToColour(getCurrentRow().get(i).getText()).setBackground(Color.red);
-                            getButtonToColour(getCurrentRow().get(i).getText()).setOpaque(true);
+            stillPlay(statesOfLetters, volumeOfLetters);
+        }
+    }
+
+    private void stillPlay(List<State> statesOfLetters, List<String> volumeOfLetters) {
+        if (volumeOfLetters.contains("__")) {
+            removeAll();
+            getToShortLabel().setVisible(true);
+            Position.getInstance().minusOneRound();
+        } else{
+            getToShortLabel().setVisible(false);
+            for (int i = 0; i <= 4; i++) {
+                switch (statesOfLetters.get(i)) {
+                    case WRONG -> {
+                        setLabelColors(i, Color.red);
+                        if (isButtonNotRed(i)) {
+                            setButtonColors(i, Color.red);
                         }
-                    } else if (statesOfLetters.get(i) == State.SEMI_CORRECT) {
-                        getCurrentRow().get(i).setBackground(Color.ORANGE);
-                        getCurrentRow().get(i).setOpaque(true);
-
-                        getButtonToColour(getCurrentRow().get(i).getText()).setBackground(Color.orange);
-                        getButtonToColour(getCurrentRow().get(i).getText()).setOpaque(true);
-
-                    } else {
-                        getCurrentRow().get(i).setBackground(Color.green);
-                        getCurrentRow().get(i).setOpaque(true);
-
-                        getButtonToColour(getCurrentRow().get(i).getText()).setBackground(Color.green);
-                        getButtonToColour(getCurrentRow().get(i).getText()).setOpaque(true);
-
                     }
-                    System.out.println(getCurrentRow().get(i).getBackground());
-                    System.out.println(getButtonToColour(getCurrentRow().get(i).getText()).getBackground());
+                    case SEMI_CORRECT -> {
+                        setLabelColors(i, Color.orange);
+                        setButtonColors(i, Color.orange);
+                    }
+                    case CORRECT -> {
+                        setLabelColors(i, Color.green);
+                        setButtonColors(i, Color.green);
+                    }
                 }
             }
         }
+    }
+
+    private boolean isButtonNotRed(int i) {
+        return getButtonToColour(getCurrentRow().get(i).getText()).getBackground().equals(new Color(252, 250, 255));
+    }
+
+    private void setButtonColors(int i, Color color){
+        getButtonToColour(getCurrentRow().get(i).getText()).setBackground(color);
+        getButtonToColour(getCurrentRow().get(i).getText()).setOpaque(true);
+    }
+
+    private void setLabelColors(int i, Color color){
+        getCurrentRow().get(i).setBackground(color);
+        getCurrentRow().get(i).setOpaque(true);
     }
 
     private void removeAll() {

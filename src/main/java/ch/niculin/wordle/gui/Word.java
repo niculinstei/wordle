@@ -53,10 +53,20 @@ public class Word {
                 word.get(4).getState());
     }
 
+    public boolean isWordTheWinningWord() {
+        return !getWordStates().contains(State.WRONG) && !getWordStates().contains(State.SEMI_CORRECT) && !getWordStates().contains(State.NOTHING);
+    }
+
     public String getWordVolumeAsString() {
         return String.join("", getWordVolume());
     }
 
-
+    public boolean isWordValid(){
+        if (getWordVolume().contains("__")){
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
