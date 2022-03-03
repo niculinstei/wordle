@@ -33,7 +33,7 @@ public class WordCheckerImpl implements WordChecker {
                 continue;
             }
 
-             if (solutionAsListOfString.contains(wordAsListOfStrings.get(i)) && !word.getWord().get(i).getState().equals(State.CORRECT))
+             if (solutionAsListOfString.contains(wordAsListOfStrings.get(i)))
                 word.getWord().get(i).setState(State.SEMI_CORRECT);
             }
 
