@@ -307,7 +307,7 @@ public class WordleView {
     }
 
     public void deleteLetter(Letter letter) {
-        var index = Position.getInstance().getPosition();
+        var index = Position.getInstance().getNextPosition();
         getCurrentRow().get(index).setText(letter.getLetter());
     }
 

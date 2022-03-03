@@ -30,11 +30,11 @@ public class Position {
     }
 
     public void moveBackward() {
-        if (nextPosition < 3 && position > 0){
-            position--;
-        }
-        if (nextPosition > 0){
+        if (position < 3 && nextPosition > 0){
             nextPosition--;
+        }
+        if (position > 0){
+            position--;
         }
     }
 
