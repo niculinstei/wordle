@@ -407,24 +407,24 @@ public class WordleView {
     }
 
     public void colorLabels(Word word) {
-        List<State> statesOfLetters = word.getWordStates();
-        //TODO allenfalls letter verwenden --> list of letters
-        List<String> volumeOfLetters = word.getWordVolume();
-        if (word.isWordTheWinningWord()){
+
+        if (word.isWordTheWinningWord()) {
             winPanel.setVisible(true);
             topPanel.setVisible(false);
             bottomPanel.setVisible(false);
         } else {
-            stillPlay(statesOfLetters, volumeOfLetters);
+            stillPlay(word);
         }
     }
 
-    private void stillPlay(List<State> statesOfLetters, List<String> volumeOfLetters) {
-        if (volumeOfLetters.contains("__")) {
+    private void stillPlay(Word word) {
+
+        List<State> statesOfLetters = word.getWordStates();
+        if (!word.isWordValid()) {
             removeAll();
             getToShortLabel().setVisible(true);
             Position.getInstance().minusOneRound();
-        } else{
+        } else {
             getToShortLabel().setVisible(false);
             for (int i = 0; i <= 4; i++) {
                 switch (statesOfLetters.get(i)) {
@@ -451,12 +451,12 @@ public class WordleView {
         return getButtonToColour(getCurrentRow().get(i).getText()).getBackground().equals(new Color(252, 250, 255));
     }
 
-    private void setButtonColors(int i, Color color){
+    private void setButtonColors(int i, Color color) {
         getButtonToColour(getCurrentRow().get(i).getText()).setBackground(color);
         getButtonToColour(getCurrentRow().get(i).getText()).setOpaque(true);
     }
 
-    private void setLabelColors(int i, Color color){
+    private void setLabelColors(int i, Color color) {
         getCurrentRow().get(i).setBackground(color);
         getCurrentRow().get(i).setOpaque(true);
     }
@@ -501,7 +501,7 @@ public class WordleView {
 
     private void createUIComponents() {
         imageLabel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("images/winImage.jpg").getImage().getScaledInstance(450,600, Image.SCALE_SMOOTH));
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("images/winImage.jpg").getImage().getScaledInstance(450, 600, Image.SCALE_SMOOTH));
         imageLabel.setIcon(imageIcon);
     }
 }

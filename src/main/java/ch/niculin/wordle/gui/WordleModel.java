@@ -6,7 +6,6 @@ import java.util.*;
 
 public class WordleModel {
     WordCheckerImpl wordChecker = new WordCheckerImpl();
-    //TODO mit Word ersetzen?
     private final Word row1;
     private final Word row2;
     private final Word row3;
@@ -36,8 +35,8 @@ public class WordleModel {
 
     private Word fillList() {
         List<Letter> letterList = new ArrayList<>();
-        for (int i = 0; i < 5; i++){
-           letterList.add(new Letter("__", State.NOTHING));
+        for (int i = 0; i < 5; i++) {
+            letterList.add(new Letter("__", State.NOTHING));
         }
         return new Word(letterList);
     }
@@ -49,7 +48,7 @@ public class WordleModel {
         return letterToReturn;
     }
 
-    //TODO: braucht es setState?, code teilen mit removeALL
+
     public Letter deleteCurrentLetter() {
         Letter letterToReturn = getCurrentLetter();
         letterToReturn.setLetter("__");

@@ -6,16 +6,17 @@ import java.util.List;
 public class Word {
     private final List<Letter> word;
 
-    public Word (Letter l1, Letter l2, Letter l3, Letter l4, Letter l5){
+    public Word(Letter l1, Letter l2, Letter l3, Letter l4, Letter l5) {
         word = List.of(l1, l2, l3, l4, l5);
     }
-    public Word(List<Letter> letter){
+
+    public Word(List<Letter> letter) {
         this.word = letter;
     }
 
-    public Word(String word){
+    public Word(String word) {
         List<Letter> list = new ArrayList<>();
-        for (int i = 0; i < word.length(); i++){
+        for (int i = 0; i < word.length(); i++) {
             char currentChar = word.charAt(i);
             String string = Character.toString(currentChar);
             list.add(new Letter(string, State.NOTHING));
@@ -40,7 +41,8 @@ public class Word {
                 word.get(3),
                 word.get(4));
     }
-    public List<Letter> getWord(){
+
+    public List<Letter> getWord() {
         return word;
     }
 
@@ -61,12 +63,15 @@ public class Word {
         return String.join("", getWordVolume());
     }
 
-    public boolean isWordValid(){
-        if (getWordVolume().contains("__")){
-            return false;
-        } else {
-            return true;
+    public boolean isWordValid() {
+/*        for (Letter letter : word) {
+            if (!letter.isValid()) {
+                return false;
+            }
         }
+        return true;*/
+
+        return word.stream().allMatch(Letter::isValid);
     }
 }
 
