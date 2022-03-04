@@ -362,10 +362,6 @@ public class WordleView {
         return toShortLabel;
     }
 
-    public JLabel getEndLabel() {
-        return endLabel;
-    }
-
     {
         fieldsToFillTry1 = new ArrayList<>();
         fieldsToFillTry2 = new ArrayList<>();
@@ -456,24 +452,29 @@ public class WordleView {
                 switch (statesOfLetters.get(i)) {
                     case WRONG -> {
                         setLabelColors(i, Color.red);
-                        if (isButtonNotRed(i)) {
+                        if (isButtonWhite(i)) {
                             setButtonColors(i, Color.red);
                         }
                     }
                     case SEMI_CORRECT -> {
                         setLabelColors(i, Color.orange);
-                        setButtonColors(i, Color.orange);
+                        if (isButtonWhite(i)){
+                            setButtonColors(i, Color.orange);
+                        }
+
                     }
                     case CORRECT -> {
                         setLabelColors(i, Color.green);
                         setButtonColors(i, Color.green);
+
+
                     }
                 }
             }
         }
     }
 
-    private boolean isButtonNotRed(int i) {
+    private boolean isButtonWhite(int i) {
         return getButtonToColour(getCurrentRow().get(i).getText()).getBackground().equals(new Color(252, 250, 255));
     }
 

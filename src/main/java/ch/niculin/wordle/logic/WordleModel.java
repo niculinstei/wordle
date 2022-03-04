@@ -15,7 +15,7 @@ public class WordleModel {
     private final Word row4;
     private final Word row5;
     private final Word row6;
-    private List<String> wordList;
+    private final List<String> wordList;
     WordCheckerImpl wordChecker;
 
 
@@ -29,7 +29,9 @@ public class WordleModel {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        while(scanner.hasNext()) {
+        while(true) {
+            assert scanner != null;
+            if (!scanner.hasNext()) break;
             wordList.add(scanner.nextLine().toUpperCase(Locale.ROOT));
         }
         wordChecker = new WordCheckerImpl(wordList);
