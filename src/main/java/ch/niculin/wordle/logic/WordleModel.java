@@ -79,12 +79,22 @@ public class WordleModel {
     }
 
     public boolean gameCanContinue() {
-        if (Position.getInstance().plusOneRound()) {
+        if (!Position.getInstance().plusOneRound()) {
+            return true;
+        } else {
             Position.getInstance().resetPosition();
+            return false;
+
+        }
+    }
+
+    public boolean IsWordTheSolution(Word word) {
+        if (wordChecker.checkSuccess(word)) {
             return true;
         } else {
             return false;
         }
+
     }
 
     public List<String> getWordList() {

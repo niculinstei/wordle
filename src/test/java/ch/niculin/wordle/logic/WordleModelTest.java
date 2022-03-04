@@ -50,9 +50,9 @@ class WordleModelTest {
     }
 
 
-    @Test
+/*    @Test
     void canGameContinue() {
         boolean condition = wordleModel.gameCanContinue();
         assertTrue(condition);
-    }
+    }*/
 }

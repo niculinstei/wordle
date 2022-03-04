@@ -24,7 +24,7 @@ public class EnterActionListener implements ActionListener {
         else {
             view.colorLabels(model.removeAllLettersOfCurrentRow());
         }
-        if (!model.gameCanContinue()){
+        if (model.gameCanContinue() && !model.IsWordTheSolution(view.getWord())){
             view.getBottomPanel().setVisible(false);
             view.getTopPanel().setVisible(false);
             view.getWinPanel().setVisible(true);

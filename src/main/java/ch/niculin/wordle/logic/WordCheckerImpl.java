@@ -50,6 +50,10 @@ public class WordCheckerImpl implements WordChecker {
         return word;
     }
 
+    public boolean checkSuccess(Word word) {
+        return word.getWordVolumeAsString().equals(solution);
+    }
+
     private List<String> getSolutionAsListOfStrings (String string){
         List<String> listTOReturn = new ArrayList<>();
         for (int i = 0; i < string.length(); i++){

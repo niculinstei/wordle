@@ -431,7 +431,9 @@ public class WordleView {
     public void colorLabels(Word word) {
 
         if (word.isWordTheWinningWord()) {
+            loseImageField.setVisible(false);
             winPanel.setVisible(true);
+            winImageLabel.setVisible(true);
             topPanel.setVisible(false);
             bottomPanel.setVisible(false);
         } else {
