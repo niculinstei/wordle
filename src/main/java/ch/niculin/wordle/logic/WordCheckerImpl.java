@@ -1,12 +1,20 @@
 package ch.niculin.wordle.logic;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class WordCheckerImpl implements WordChecker {
-    String solution = "PIZZA";
-    List<String> solutionAsListOfString = List.of("P", "I", "Z", "Z", "A");
+    String solution;
+    List<String> solutionAsListOfString;
     String wordAsString;
 
+    public WordCheckerImpl(List<String> wordList){
+        Random ran = new Random();
+        solution = wordList.get(ran.nextInt(wordList.size()));
+        solutionAsListOfString = getSolutionAsListOfStrings(solution);
+        System.out.println(solution);
+    }
 
     @Override
     public Word checkUserWordInput(Word word) {
@@ -40,6 +48,16 @@ public class WordCheckerImpl implements WordChecker {
             letter.setState(State.CORRECT);
         }
         return word;
+    }
+
+    private List<String> getSolutionAsListOfStrings (String string){
+        List<String> listTOReturn = new ArrayList<>();
+        for (int i = 0; i < string.length(); i++){
+            char c = (string.charAt(i));
+            String s = Character.toString(c);
+            listTOReturn.add(s);
+        }
+        return listTOReturn;
     }
 }
 

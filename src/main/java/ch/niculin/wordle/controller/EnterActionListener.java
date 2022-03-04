@@ -25,7 +25,11 @@ public class EnterActionListener implements ActionListener {
             view.colorLabels(model.removeAllLettersOfCurrentRow());
         }
         if (!model.gameCanContinue()){
-            view.getEndLabel().setVisible(true);
+            view.getBottomPanel().setVisible(false);
+            view.getTopPanel().setVisible(false);
+            view.getWinPanel().setVisible(true);
+            view.getWinImageLabel().setVisible(false);
+            view.getLoseImageField().setVisible(true);
         }
     }
 }

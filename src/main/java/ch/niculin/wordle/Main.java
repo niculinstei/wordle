@@ -9,5 +9,6 @@ public class Main {
         WordleView theView =  new WordleView();
         WordleModel theWordle = new WordleModel();
         new WordleController(theView, theWordle);
+
     }
 }

@@ -1,28 +1,38 @@
 package ch.niculin.wordle.logic;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class WordleModel {
-    WordCheckerImpl wordChecker = new WordCheckerImpl();
+
     private final Word row1;
     private final Word row2;
     private final Word row3;
     private final Word row4;
     private final Word row5;
     private final Word row6;
-    private final List<String> wordList;
+    private List<String> wordList;
+    WordCheckerImpl wordChecker;
+
 
     public WordleModel() {
         wordList = new ArrayList<>();
-        wordList.add("VOGEL");
-        wordList.add("QUIZZ");
-        wordList.add("PIZZA");
-        wordList.add("QUARZ");
-        wordList.add("ZWECK");
-        wordList.add("ZWICK");
-        wordList.add("JUCKT");
-        wordList.add("ABZUG");
+
+        File file = new File("list.txt");
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        while(scanner.hasNext()) {
+            wordList.add(scanner.nextLine().toUpperCase(Locale.ROOT));
+        }
+        wordChecker = new WordCheckerImpl(wordList);
 
         row1 = fillList();
         row2 = fillList();
@@ -47,7 +57,6 @@ public class WordleModel {
         return letterToReturn;
     }
 
-
     public Letter deleteCurrentLetter() {
         Letter letterToReturn = getCurrentLetter();
         letterToReturn.setLetter("__");
@@ -61,6 +70,25 @@ public class WordleModel {
         }
         return new Word(getCurrentRow().getWordLetter());
     }
+
+    public Word rateCurrentWord(Word word) {
+        wordChecker.checkUserWordInput(word);
+        return word;
+    }
+
+    public boolean gameCanContinue() {
+        if (Position.getInstance().plusOneRound()) {
+            Position.getInstance().resetPosition();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<String> getWordList() {
+        return wordList;
+    }
+
 
     private Letter getCurrentLetter() {
         return switch (Position.getInstance().getRound()) {
@@ -101,19 +129,5 @@ public class WordleModel {
 
     private boolean validateWordIsInList(Word word) {
         return wordList.contains(word.getWordVolumeAsString());
-    }
-
-    public Word rateCurrentWord(Word word) {
-        wordChecker.checkUserWordInput(word);
-        return word;
-    }
-
-    public boolean gameCanContinue() {
-        if (Position.getInstance().plusOneRound()) {
-            Position.getInstance().resetPosition();
-            return true;
-        } else {
-            return false;
-        }
     }
 }

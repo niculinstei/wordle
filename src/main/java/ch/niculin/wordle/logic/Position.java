@@ -69,4 +69,5 @@ public class Position {
     public int getNextPosition() {
         return nextPosition;
     }
+
 }

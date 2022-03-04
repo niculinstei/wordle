@@ -83,7 +83,28 @@ public class WordleView {
     private JLabel toShortLabel;
     private JLabel endLabel;
     private JPanel winPanel;
-    private JLabel imageLabel;
+    private JLabel winImageLabel;
+    private JLabel loseImageField;
+
+    public JLabel getLoseImageField() {
+        return loseImageField;
+    }
+
+    public JPanel getTopPanel() {
+        return topPanel;
+    }
+
+    public JPanel getBottomPanel() {
+        return bottomPanel;
+    }
+
+    public JPanel getWinPanel() {
+        return winPanel;
+    }
+
+    public JLabel getWinImageLabel() {
+        return winImageLabel;
+    }
 
     public JButton getaButton() {
         return aButton;
@@ -505,8 +526,12 @@ public class WordleView {
     }
 
     private void createUIComponents() {
-        imageLabel = new JLabel();
+        winImageLabel = new JLabel();
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("images/winImage.jpg").getImage().getScaledInstance(450, 600, Image.SCALE_SMOOTH));
-        imageLabel.setIcon(imageIcon);
+        winImageLabel.setIcon(imageIcon);
+
+        loseImageField = new JLabel();
+        ImageIcon imageIcon2 = new ImageIcon(new ImageIcon("images/loseImage.jpg").getImage().getScaledInstance(450, 600, Image.SCALE_SMOOTH));
+        loseImageField.setIcon(imageIcon2);
     }
 }
