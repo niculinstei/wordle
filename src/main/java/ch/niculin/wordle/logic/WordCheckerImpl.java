@@ -1,17 +1,31 @@
 package ch.niculin.wordle.logic;
 
+import ch.niculin.wordle.persistence.StatePersistence;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class WordCheckerImpl implements WordChecker {
-    String solution;
-    List<String> solutionAsListOfString;
-    String wordAsString;
+    private String solution;
+    private List<String> solutionAsListOfString;
+    private String wordAsString;
 
     public WordCheckerImpl(List<String> wordList){
         Random ran = new Random();
-        solution = wordList.get(ran.nextInt(wordList.size()));
+        int counter = 0;
+        for (Word word : new StatePersistence().loadState().getWords()){
+            if (word.isWordValid()){
+                counter++;
+            }
+        }
+        if (counter == 0){
+            solution = wordList.get(ran.nextInt(wordList.size()));
+            new StatePersistence().saveSolution(solution);
+        } else {
+            solution = new StatePersistence().loadSolution();
+        }
+
         solutionAsListOfString = getSolutionAsListOfStrings(solution);
         System.out.println(solution);
     }
@@ -20,7 +34,6 @@ public class WordCheckerImpl implements WordChecker {
     public Word checkUserWordInput(Word word) {
         List<String> wordAsListOfStrings = word.getWordVolume();
         wordAsString = wordAsListOfStrings.toString();
-
 
         if (wordAsString.equals(solution)) {
             return returnSuccess(word);
@@ -62,6 +75,18 @@ public class WordCheckerImpl implements WordChecker {
             listTOReturn.add(s);
         }
         return listTOReturn;
+    }
+
+    public String getSolution() {
+        return solution;
+    }
+
+    public List<String> getSolutionAsListOfString() {
+        return solutionAsListOfString;
+    }
+
+    public String getWordAsString() {
+        return wordAsString;
     }
 }
 

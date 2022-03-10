@@ -2,6 +2,7 @@ package ch.niculin.wordle.controller;
 
 import ch.niculin.wordle.gui.WordleView;
 import ch.niculin.wordle.logic.WordleModel;
+import ch.niculin.wordle.persistence.StatePersistence;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,7 @@ public class EnterActionListener implements ActionListener {
             view.getWinPanel().setVisible(true);
             view.getWinImageLabel().setVisible(false);
             view.getLoseImageField().setVisible(true);
+            new StatePersistence().resetFile();
         }
     }
 }

@@ -1,55 +1,58 @@
 package ch.niculin.wordle.logic;
 
+import ch.niculin.wordle.persistence.StatePersistence;
+import ch.niculin.wordle.persistence.WordListImporter;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
 
 public class WordleModel {
-
-    private final Word row1;
-    private final Word row2;
-    private final Word row3;
-    private final Word row4;
-    private final Word row5;
-    private final Word row6;
+    private final Words words;
     private final List<String> wordList;
     WordCheckerImpl wordChecker;
+    StatePersistence statePersistence = new StatePersistence();
 
 
     public WordleModel() {
-        wordList = new ArrayList<>();
-
         File file = new File("list.txt");
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        while(true) {
-            assert scanner != null;
-            if (!scanner.hasNext()) break;
-            wordList.add(scanner.nextLine().toUpperCase(Locale.ROOT));
-        }
+        wordList = new WordListImporter().getWordListFromFile(file);
         wordChecker = new WordCheckerImpl(wordList);
-
-        row1 = fillList();
-        row2 = fillList();
-        row3 = fillList();
-        row4 = fillList();
-        row5 = fillList();
-        row6 = fillList();
+        this.words = new StatePersistence().loadState();
     }
 
-    private Word fillList() {
-        List<Letter> letterList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            letterList.add(new Letter("__", State.NOTHING));
+    public Word getRow1() {
+        return rateCurrentWord(words.getWordAt(1));
+    }
+
+    public Word getRow2() {
+        return rateCurrentWord(words.getWordAt(2));
+    }
+
+    public Word getRow3() {
+        return rateCurrentWord(words.getWordAt(3));
+    }
+
+    public Word getRow4() {
+        return rateCurrentWord(words.getWordAt(4));
+    }
+
+    public Word getRow5() {
+        return rateCurrentWord(words.getWordAt(5));
+    }
+
+    public Word getRow6() {
+        return rateCurrentWord(words.getWordAt(6));
+    }
+
+    public List<Word> getRowsToColour() {
+        List<Word> rowsToColour = new ArrayList<>();
+        for (Word word : words.getWords()){
+            if (word.isWordValid()){
+                rowsToColour.add(word);
+            }
         }
-        return new Word(letterList);
+        return rowsToColour;
     }
 
     public Letter setNextLetter(String letterToFill) {
@@ -61,7 +64,7 @@ public class WordleModel {
 
     public Letter deleteCurrentLetter() {
         Letter letterToReturn = getCurrentLetter();
-        letterToReturn.setLetter("__");
+        letterToReturn.setLetter("_");
         Position.getInstance().moveBackward();
         return letterToReturn;
     }
@@ -75,6 +78,7 @@ public class WordleModel {
 
     public Word rateCurrentWord(Word word) {
         wordChecker.checkUserWordInput(word);
+        statePersistence.saveState(words);
         return word;
     }
 
@@ -97,33 +101,13 @@ public class WordleModel {
 
     }
 
-    public List<String> getWordList() {
-        return wordList;
-    }
-
-
     private Letter getCurrentLetter() {
-        return switch (Position.getInstance().getRound()) {
-            case 1 -> row1.getWordLetter().get(Position.getInstance().getNextPosition());
-            case 2 -> row2.getWordLetter().get(Position.getInstance().getNextPosition());
-            case 3 -> row3.getWordLetter().get(Position.getInstance().getNextPosition());
-            case 4 -> row4.getWordLetter().get(Position.getInstance().getNextPosition());
-            case 5 -> row5.getWordLetter().get(Position.getInstance().getNextPosition());
-            case 6 -> row6.getWordLetter().get(Position.getInstance().getNextPosition());
-            default -> new Letter("__", State.NOTHING);
-        };
+        Word word = getCurrentRow();
+        return word.getWordLetter().get(Position.getInstance().getNextPosition());
     }
 
     private Word getCurrentRow() {
-        return switch (Position.getInstance().getRound()) {
-            case 1 -> row1;
-            case 2 -> row2;
-            case 3 -> row3;
-            case 4 -> row4;
-            case 5 -> row5;
-            case 6 -> row6;
-            default -> new Word(" ");
-        };
+        return words.getWordAt(Position.getInstance().getRound());
     }
 
     public boolean wordIsValid(Word word) {

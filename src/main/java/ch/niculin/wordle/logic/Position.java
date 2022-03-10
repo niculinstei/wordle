@@ -1,5 +1,7 @@
 package ch.niculin.wordle.logic;
 
+import ch.niculin.wordle.persistence.StatePersistence;
+
 public class Position {
     private static Position INSTANCE;
     private static int position;
@@ -9,7 +11,7 @@ public class Position {
     private Position() {
         position = 0;
         nextPosition = 0;
-        round = 1;
+        round = calculateRound();
         System.out.println("Position : " + position);
     }
 
@@ -70,4 +72,20 @@ public class Position {
         return nextPosition;
     }
 
+    private int calculateRound() {
+        int emptyWords = 0;
+        int round;
+        Words state =  new StatePersistence().loadState();
+        for (Word word : state.getWords()){
+            if (!word.isWordValid()){
+                emptyWords++;
+            }
+        }
+
+        round = 7 - emptyWords;
+
+        return round;
+
+
+    }
 }

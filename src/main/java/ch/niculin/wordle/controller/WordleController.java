@@ -1,6 +1,7 @@
 package ch.niculin.wordle.controller;
 
-import ch.niculin.wordle.gui.*;
+import ch.niculin.wordle.gui.WordleView;
+import ch.niculin.wordle.logic.Word;
 import ch.niculin.wordle.logic.WordleModel;
 
 public class WordleController {
@@ -8,10 +9,38 @@ public class WordleController {
     private final WordleModel theModel;
 
     public WordleController(WordleView theView, WordleModel theModel) {
-        this.theView = theView;
         this.theModel = theModel;
+        this.theView = theView;
 
+        initialiseField();
         setListener();
+    }
+    //Es wird immer die nächste row gefärbt
+
+    private void initialiseField() {
+        for (int i = 0; i < theView.getFieldsToFillTry1().size(); i++) {
+            theView.getFieldsToFillTry1().get(i).setText(theModel.getRow1().getWordVolume().get(i));
+        }
+        for (int i = 0; i < theView.getFieldsToFillTry2().size(); i++) {
+            theView.getFieldsToFillTry2().get(i).setText(theModel.getRow2().getWordVolume().get(i));
+        }
+        for (int i = 0; i < theView.getFieldsToFillTry3().size(); i++) {
+            theView.getFieldsToFillTry3().get(i).setText(theModel.getRow3().getWordVolume().get(i));
+        }
+        for (int i = 0; i < theView.getFieldsToFillTry4().size(); i++) {
+            theView.getFieldsToFillTry4().get(i).setText(theModel.getRow4().getWordVolume().get(i));
+        }
+        for (int i = 0; i < theView.getFieldsToFillTry5().size(); i++) {
+            theView.getFieldsToFillTry5().get(i).setText(theModel.getRow5().getWordVolume().get(i));
+        }
+        for (int i = 0; i < theView.getFieldsToFillTry6().size(); i++) {
+            theView.getFieldsToFillTry6().get(i).setText(theModel.getRow6().getWordVolume().get(i));
+        }
+            int index = 1;
+        for (Word word : theModel.getRowsToColour()){
+            theView.colourFieldAfterInitialise(word, index);
+            index++;
+        }
     }
 
     private void setListener() {

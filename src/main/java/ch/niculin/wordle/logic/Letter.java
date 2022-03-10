@@ -27,6 +27,6 @@ public class Letter {
     }
 
     public boolean isValid() {
-        return !letter.equals("__");
+        return !letter.equals("_");
     }
 }

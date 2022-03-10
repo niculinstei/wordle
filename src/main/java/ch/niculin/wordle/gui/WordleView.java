@@ -4,6 +4,7 @@ import ch.niculin.wordle.logic.Letter;
 import ch.niculin.wordle.logic.Position;
 import ch.niculin.wordle.logic.State;
 import ch.niculin.wordle.logic.Word;
+import ch.niculin.wordle.persistence.StatePersistence;
 
 import javax.swing.*;
 import java.awt.*;
@@ -358,6 +359,32 @@ public class WordleView {
         }
     }
 
+    private List<JLabel> getCurrentRowToColour(int index) {
+        switch (index) {
+            case 1 -> {
+                return fieldsToFillTry1;
+            }
+            case 2 -> {
+                return fieldsToFillTry2;
+            }
+            case 3 -> {
+                return fieldsToFillTry3;
+            }
+            case 4 -> {
+                return fieldsToFillTry4;
+            }
+            case 5 -> {
+                return fieldsToFillTry5;
+            }
+            case 6 -> {
+                return fieldsToFillTry6;
+            }
+            default -> {
+                return new ArrayList<>();
+            }
+        }
+    }
+
     public JLabel getToShortLabel() {
         return toShortLabel;
     }
@@ -436,6 +463,7 @@ public class WordleView {
             winImageLabel.setVisible(true);
             topPanel.setVisible(false);
             bottomPanel.setVisible(false);
+            new StatePersistence().resetFile();
         } else {
             stillPlay(word);
         }
@@ -460,7 +488,7 @@ public class WordleView {
                     }
                     case SEMI_CORRECT -> {
                         setLabelColors(i, Color.orange);
-                        if (isButtonWhite(i)){
+                        if (isButtonWhite(i)) {
                             setButtonColors(i, Color.orange);
                         }
 
@@ -468,9 +496,32 @@ public class WordleView {
                     case CORRECT -> {
                         setLabelColors(i, Color.green);
                         setButtonColors(i, Color.green);
-
-
                     }
+                }
+            }
+        }
+    }
+
+    public void colourFieldAfterInitialise(Word word, int index) {
+        List<State> statesOfLetters = word.getWordStates();
+        getToShortLabel().setVisible(false);
+        for (int i = 0; i <= 4; i++) {
+            switch (statesOfLetters.get(i)) {
+                case WRONG -> {
+                    setLabelColorsAfterIInitialise(i, Color.red, index);
+                    if (isButtonWhiteAfterInitialise(i, index)) {
+                        setButtonColorsAfterInitialise(i, Color.red, index);
+                    }
+                }
+                case SEMI_CORRECT -> {
+                    setLabelColorsAfterIInitialise(i, Color.orange, index);
+                    if (isButtonWhiteAfterInitialise(i, index)) {
+                        setButtonColorsAfterInitialise(i, Color.orange, index);
+                    }
+                }
+                case CORRECT -> {
+                    setLabelColorsAfterIInitialise(i, Color.green, index);
+                    setButtonColorsAfterInitialise(i, Color.green, index);
                 }
             }
         }
@@ -480,9 +531,18 @@ public class WordleView {
         return getButtonToColour(getCurrentRow().get(i).getText()).getBackground().equals(new Color(252, 250, 255));
     }
 
+    private boolean isButtonWhiteAfterInitialise(int i, int index) {
+        return getButtonToColour(getCurrentRowToColour(index).get(i).getText()).getBackground().equals(new Color(252, 250, 255));
+    }
+
     private void setButtonColors(int i, Color color) {
         getButtonToColour(getCurrentRow().get(i).getText()).setBackground(color);
         getButtonToColour(getCurrentRow().get(i).getText()).setOpaque(true);
+    }
+
+    private void setButtonColorsAfterInitialise(int i, Color color, int index) {
+        getButtonToColour(getCurrentRowToColour(index).get(i).getText()).setBackground(color);
+        getButtonToColour(getCurrentRowToColour(index).get(i).getText()).setOpaque(true);
     }
 
     private void setLabelColors(int i, Color color) {
@@ -490,9 +550,14 @@ public class WordleView {
         getCurrentRow().get(i).setOpaque(true);
     }
 
+    private void setLabelColorsAfterIInitialise(int i, Color color, int indexFromController) {
+        getCurrentRowToColour(indexFromController).get(i).setBackground(color);
+        getCurrentRowToColour(indexFromController).get(i).setOpaque(true);
+    }
+
     private void removeAll() {
         for (JLabel jLabel : getCurrentRow()) {
-            jLabel.setText("__");
+            jLabel.setText("_");
         }
     }
 
@@ -536,5 +601,29 @@ public class WordleView {
         loseImageField = new JLabel();
         ImageIcon imageIcon2 = new ImageIcon(new ImageIcon("images/loseImage.jpg").getImage().getScaledInstance(450, 600, Image.SCALE_SMOOTH));
         loseImageField.setIcon(imageIcon2);
+    }
+
+    public List<JLabel> getFieldsToFillTry1() {
+        return fieldsToFillTry1;
+    }
+
+    public List<JLabel> getFieldsToFillTry2() {
+        return fieldsToFillTry2;
+    }
+
+    public List<JLabel> getFieldsToFillTry3() {
+        return fieldsToFillTry3;
+    }
+
+    public List<JLabel> getFieldsToFillTry4() {
+        return fieldsToFillTry4;
+    }
+
+    public List<JLabel> getFieldsToFillTry5() {
+        return fieldsToFillTry5;
+    }
+
+    public List<JLabel> getFieldsToFillTry6() {
+        return fieldsToFillTry6;
     }
 }
