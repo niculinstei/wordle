@@ -452,7 +452,9 @@ public class WordleView {
         frame.setVisible(true);
         endLabel.setVisible(false);
         toShortLabel.setVisible(false);
+        loseImageField.setVisible(false);
         winPanel.setVisible(false);
+
     }
 
     public void colorLabels(Word word) {
@@ -464,6 +466,9 @@ public class WordleView {
             topPanel.setVisible(false);
             bottomPanel.setVisible(false);
             new StatePersistence().resetFile();
+
+
+
         } else {
             stillPlay(word);
         }

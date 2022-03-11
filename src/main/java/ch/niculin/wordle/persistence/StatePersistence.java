@@ -1,5 +1,6 @@
 package ch.niculin.wordle.persistence;
 
+import ch.niculin.wordle.logic.Solution;
 import ch.niculin.wordle.logic.Word;
 import ch.niculin.wordle.logic.Words;
 
@@ -7,11 +8,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-
 public class StatePersistence {
     File file = new File("state.txt");
     File solutionFile = new File("solution.txt");
@@ -31,11 +32,15 @@ public class StatePersistence {
         }
     }
 
-    public void saveSolution(String solution) {
-        FileWriter writer;
+    public void saveSolution(Solution solution) {
+
         try {
-            writer = new FileWriter(solutionFile, false);
-            writer.write(solution);
+
+            FileWriter writer = createSolutionFile();
+            writer.write(solution.getSolution());
+            writer.write(System.getProperty("line.separator"));
+            writer.write(solution.getDate().toString());
+            writer.write(System.getProperty("line.separator"));
             writer.flush();
             writer.close();
         } catch (IOException e) {
@@ -43,16 +48,34 @@ public class StatePersistence {
         }
     }
 
-    public String loadSolution() {
-        String solution = null;
+    private FileWriter createSolutionFile() throws IOException {
+        FileWriter writer;
+        writer = new FileWriter(solutionFile, false);
+        return writer;
+    }
+
+    public Solution loadSolution() {
+        List<String> strings = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(solutionFile);
-            solution = scanner.nextLine().toUpperCase(Locale.ROOT);
+            while (scanner.hasNextLine()){
+                strings.add(scanner.nextLine());
+            }
+            if (strings.size() == 2){
+                return new Solution(strings.get(0), LocalDate.parse(strings.get(1)));
+            } else if (strings.size() == 3){
+                return new Solution("!!!", LocalDate.now());
+            } else {
+                return new Solution("VOGEL", LocalDate.now());
+            }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            try {
+                createSolutionFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return null;
         }
-
-        return solution;
     }
 
     public void resetFile() {
@@ -82,5 +105,17 @@ public class StatePersistence {
         }
 
         return new Words(wordList);
+    }
+
+    public void WordIsCorrect (String s, LocalDate date) {
+        try {
+            FileWriter writer = new FileWriter(solutionFile, false);
+            writer.write(s);
+            writer.write(System.getProperty("line.separator"));
+            writer.write(date.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

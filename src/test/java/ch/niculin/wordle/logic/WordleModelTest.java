@@ -48,11 +48,4 @@ class WordleModelTest {
         boolean condition = wordleModel.wordIsValid(word);
         assertFalse(condition);
     }
-
-
-/*    @Test
-    void canGameContinue() {
-        boolean condition = wordleModel.gameCanContinue();
-        assertTrue(condition);
-    }*/
 }
