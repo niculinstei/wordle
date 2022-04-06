@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Random;
 
 public class WordCheckerImpl implements WordChecker {
-    private  Solution solution;
+    private final Solution solution;
     private final List<String> solutionAsListOfString;
 
     public WordCheckerImpl(List<String> wordList) {
+
         Random ran = new Random();
         LocalDate dateOfSolution = new StatePersistence().loadSolution().getDate();
         if (LocalDate.now().isAfter(dateOfSolution)) {
@@ -47,8 +48,14 @@ public class WordCheckerImpl implements WordChecker {
                 continue;
             }
 
-            if (solutionAsListOfString.contains(wordAsListOfStrings.get(i)))
+            if (solutionAsListOfString.contains(wordAsListOfStrings.get(i))){
                 word.getWord().get(i).setState(State.SEMI_CORRECT);
+            }
+
+            if (word.getWord().get(i).getLetter().equals("_")){
+                word.getWord().get(i).setState(State.NOTHING);
+            }
+
         }
 
         return word;

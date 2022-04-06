@@ -4,12 +4,12 @@ import java.util.List;
 
 public class Words {
     //TODO könnte man auf liste von wörter umbauen
-    private Word word1;
-    private Word word2;
-    private Word word3;
-    private Word word4;
-    private Word word5;
-    private Word word6;
+    private final Word word1;
+    private final Word word2;
+    private final Word word3;
+    private final Word word4;
+    private final Word word5;
+    private final Word word6;
 
     public Words(Word word1, Word word2, Word word3, Word word4, Word word5, Word word6) {
         this.word1 = word1;
@@ -28,6 +28,8 @@ public class Words {
         this.word5 = words.get(4);
         this.word6 = words.get(5);
     }
+
+
 
     public List<Word> getWords() {
         return List.of(word1, word2, word3, word4, word5, word6);

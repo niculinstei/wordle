@@ -1,52 +1,81 @@
 package ch.niculin.wordle.persistence;
 
-import ch.niculin.wordle.logic.Solution;
-import ch.niculin.wordle.logic.Word;
-import ch.niculin.wordle.logic.Words;
+import ch.niculin.wordle.logic.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+
 public class StatePersistence {
-    File file = new File("state.txt");
-    File solutionFile = new File("solution.txt");
+    File stateFile = new File("State.json");
+    File solutionFile = new File("Solution.json");
 
     public void saveState(Words words) {
-        FileWriter writer;
-        try {
-            writer = new FileWriter(file, false);
-            for (Word word : words.getWords()) {
-                writer.write(word.getWordVolumeAsString());
-                writer.write(System.getProperty("line.separator"));
+        JSONArray jsonArray = new JSONArray();
+        
+        for (int i = 1; i < words.getWords().size() +1; i++) {
+            StringBuilder s = new StringBuilder();
+            JSONObject fullWordDetails = new JSONObject();
+
+            for (State state : words.getWordAt(i).getWordStates()) {
+                switch (state) {
+                    case CORRECT -> {
+                        s.append("C");
+                    }
+
+                    case WRONG -> {
+                        s.append("W");
+                    }
+
+                    case SEMI_CORRECT -> {
+                        s.append("S");
+                    }
+
+                    case NOTHING -> {
+                        s.append("N");
+                    }
+
+                }
             }
-            writer.flush();
-            writer.close();
+            fullWordDetails.put("state", s.toString());
+            fullWordDetails.put("word", words.getWordAt(i).getWordVolumeAsString());
+            JSONObject wordObject = new JSONObject();
+            wordObject.put("fullWord", fullWordDetails);
+            jsonArray.add(wordObject);
+        }
+
+
+        try (FileWriter file = new FileWriter(stateFile, false)) {
+            file.write(jsonArray.toJSONString());
+            file.flush();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void saveSolution(Solution solution) {
+        JSONObject solutionAsJSON = new JSONObject();
+        solutionAsJSON.put("word", (String) solution.getSolution());
+        solutionAsJSON.put("date", solution.getDate().toString());
 
-        try {
+        try (FileWriter file = new FileWriter(solutionFile, false)) {
+            file.write(solutionAsJSON.toJSONString());
+            file.flush();
 
-            FileWriter writer = createSolutionFile();
-            writer.write(solution.getSolution());
-            writer.write(System.getProperty("line.separator"));
-            writer.write(solution.getDate().toString());
-            writer.write(System.getProperty("line.separator"));
-            writer.flush();
-            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private FileWriter createSolutionFile() throws IOException {
         FileWriter writer;
@@ -55,67 +84,104 @@ public class StatePersistence {
     }
 
     public Solution loadSolution() {
-        List<String> strings = new ArrayList<>();
+
         try {
-            Scanner scanner = new Scanner(solutionFile);
-            while (scanner.hasNextLine()){
-                strings.add(scanner.nextLine());
-            }
-            if (strings.size() == 2){
-                return new Solution(strings.get(0), LocalDate.parse(strings.get(1)));
-            } else if (strings.size() == 3){
-                return new Solution("!!!", LocalDate.now());
-            } else {
-                return new Solution("VOGEL", LocalDate.now());
-            }
-        } catch (FileNotFoundException e) {
-            try {
-                createSolutionFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            return null;
+            Object ob = new JSONParser().parse(new FileReader(solutionFile));
+            JSONObject js = (JSONObject) ob;
+            String solution = (String) js.get("word");
+             LocalDate date = LocalDate.parse((String) js.get("date"));
+
+            return new Solution(solution, date);
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
         }
+
+        return new Solution("VOGEL", LocalDate.now());
     }
 
     public void resetFile() {
-        FileWriter writer;
-        try {
-            writer = new FileWriter(file, false);
-            for (int i = 1; i < 7; i++) {
-                writer.write("_____");
-                writer.write(System.getProperty("line.separator"));
-            }
-            writer.flush();
-            writer.close();
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 1; i < 7; i++) {
+            JSONObject fullWordDetails = new JSONObject();
+
+            fullWordDetails.put("state", "NNNNN");
+            fullWordDetails.put("word", "_____");
+            JSONObject wordObject = new JSONObject();
+            wordObject.put("fullWord", fullWordDetails);
+            jsonArray.add(wordObject);
+
+        }
+
+        try (FileWriter file = new FileWriter(stateFile, false)) {
+            file.write(jsonArray.toJSONString());
+            file.flush();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
+
+    private final List<Word> wordList = new ArrayList<>();
 
     public Words loadState() {
-        List<Word> wordList = new ArrayList<>();
-        try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNext()) {
-                wordList.add(new Word(scanner.nextLine().toUpperCase(Locale.ROOT)));
-            }
-        } catch (FileNotFoundException e) {
+
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader(stateFile)) {
+            Object obj = jsonParser.parse(reader);
+            JSONArray wordsFromJSON = (JSONArray) obj;
+            System.out.println(wordsFromJSON);
+            wordsFromJSON.forEach(wfj -> parsWordObject((JSONObject) wfj));
+
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-
+        for (Word word : wordList) {
+            System.out.println(word.toString());
+        }
         return new Words(wordList);
+
     }
 
-    public void WordIsCorrect (String s, LocalDate date) {
-        try {
-            FileWriter writer = new FileWriter(solutionFile, false);
-            writer.write(s);
-            writer.write(System.getProperty("line.separator"));
-            writer.write(date.toString());
+    private void parsWordObject(JSONObject word) {
+        JSONObject wordObject = (JSONObject) word.get("fullWord");
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        String wordFromJason = (String) wordObject.get("word");
+        char[] wordAsArray = wordFromJason.toCharArray();
+
+        String wordState = (String) wordObject.get("state");
+        char[] stateAsArray = wordState.toCharArray();
+
+        List<Letter> wordAsListOfLetter = new ArrayList<>();
+
+        for (int i = 0; i < stateAsArray.length; i++) {
+            Letter letter;
+            String s = Character.toString(wordAsArray[i]);
+            switch (stateAsArray[i]) {
+                case 'C' -> {
+                    letter = new Letter(s, State.CORRECT);
+                    wordAsListOfLetter.add(letter);
+                }
+
+                case 'W' -> {
+                    letter = new Letter(s, State.WRONG);
+                    wordAsListOfLetter.add(letter);
+                }
+                case 'S' -> {
+                    letter = new Letter(s, State.SEMI_CORRECT);
+                    wordAsListOfLetter.add(letter);
+                }
+
+                case 'N' -> {
+                    letter = new Letter(s, State.NOTHING);
+                    wordAsListOfLetter.add(letter);
+                }
+            }
         }
+
+        wordList.add(new Word(wordAsListOfLetter));
+
+
     }
 }

@@ -29,4 +29,12 @@ public class Letter {
     public boolean isValid() {
         return !letter.equals("_");
     }
+
+    @Override
+    public String toString() {
+        return "Letter{" +
+                "letter='" + letter + '\'' +
+                ", state=" + state +
+                '}';
+    }
 }

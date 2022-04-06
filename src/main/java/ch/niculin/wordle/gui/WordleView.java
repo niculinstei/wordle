@@ -443,18 +443,26 @@ public class WordleView {
                 new Letter(getCurrentRow().get(4).getText(), State.NOTHING));
     }
 
-    public WordleView() {
+    public WordleView(boolean isWinScreen) {
 
-        JFrame frame = new JFrame("ch.niculin.wordle.gui.WorddleGui");
+        JFrame frame = new JFrame("Wordelin");
         frame.setContentPane(this.mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        endLabel.setVisible(false);
-        toShortLabel.setVisible(false);
-        loseImageField.setVisible(false);
-        winPanel.setVisible(false);
-
+        if (isWinScreen){
+            endLabel.setVisible(false);
+            toShortLabel.setVisible(false);
+            loseImageField.setVisible(false);
+            winPanel.setVisible(true);
+            topPanel.setVisible(false);
+            bottomPanel.setVisible(false);
+        } else {
+            endLabel.setVisible(false);
+            toShortLabel.setVisible(false);
+            loseImageField.setVisible(false);
+            winPanel.setVisible(false);
+        }
     }
 
     public void colorLabels(Word word) {
@@ -466,9 +474,6 @@ public class WordleView {
             topPanel.setVisible(false);
             bottomPanel.setVisible(false);
             new StatePersistence().resetFile();
-
-
-
         } else {
             stillPlay(word);
         }

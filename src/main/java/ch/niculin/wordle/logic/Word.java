@@ -73,5 +73,12 @@ public class Word {
 
         return word.stream().allMatch(Letter::isValid);
     }
+
+    @Override
+    public String toString() {
+        return "Word{" +
+                "word=" + word.toString() +
+                '}';
+    }
 }
 

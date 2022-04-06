@@ -15,7 +15,6 @@ public class WordleController {
         initialiseField();
         setListener();
     }
-    //Es wird immer die nächste row gefärbt
 
     private void initialiseField() {
         for (int i = 0; i < theView.getFieldsToFillTry1().size(); i++) {

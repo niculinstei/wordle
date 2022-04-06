@@ -6,9 +6,9 @@ import ch.niculin.wordle.gui.WordleView;
 
 public class Main {
     public static void main(String[] args) {
-        WordleModel theWordle = new WordleModel();
-        WordleView theView =  new WordleView();
-        new WordleController(theView, theWordle);
+        WordleModel model = new WordleModel();
 
+        WordleView view = new WordleView(model.isWinScreen());
+        new WordleController(view, model);
     }
 }

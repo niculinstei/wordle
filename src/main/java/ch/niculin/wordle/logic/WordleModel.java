@@ -1,6 +1,5 @@
 package ch.niculin.wordle.logic;
 
-import ch.niculin.wordle.gui.WordleView;
 import ch.niculin.wordle.persistence.StatePersistence;
 import ch.niculin.wordle.persistence.WordListImporter;
 
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordleModel {
-    private Words words;
+    private final Words words;
     private final List<String> wordList;
     WordCheckerImpl wordChecker;
     StatePersistence statePersistence = new StatePersistence();
@@ -18,21 +17,9 @@ public class WordleModel {
     public WordleModel() {
         File file = new File("list.txt");
         wordList = new WordListImporter().getWordListFromFile(file);
+        //TODO model muss mit der Persistzenz kommunizieren
         wordChecker = new WordCheckerImpl(wordList);
-        if (!wordChecker.getSolution().getSolution().equals("!!")) {
-            this.words = new StatePersistence().loadState();
-        } else {
-            showWinLabel();
-        }
-
-    }
-
-    public void showWinLabel() {
-        new WordleView().getWinPanel().setVisible(true);
-        new WordleView().getWinImageLabel().setVisible(true);
-        new WordleView().getTopPanel().setVisible(false);
-        new WordleView().getBottomPanel().setVisible(false);
-        new WordleView().getLoseImageField().setVisible(false);
+        this.words = new StatePersistence().loadState();
     }
 
     public Word getRow1() {
@@ -61,8 +48,8 @@ public class WordleModel {
 
     public List<Word> getRowsToColour() {
         List<Word> rowsToColour = new ArrayList<>();
-        for (Word word : words.getWords()) {
-            if (word.isWordValid()) {
+        for (Word word : words.getWords()){
+            if (word.isWordValid()){
                 rowsToColour.add(word);
             }
         }
@@ -143,5 +130,11 @@ public class WordleModel {
 
     public List<String> getWordList() {
         return wordList;
+    }
+
+
+    //TODO erkennen wan gewonnen
+    public boolean isWinScreen() {
+        return false;
     }
 }
