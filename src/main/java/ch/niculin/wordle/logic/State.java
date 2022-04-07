@@ -5,5 +5,4 @@ public enum State {
     SEMI_CORRECT,
     CORRECT,
     NOTHING,
-
 }

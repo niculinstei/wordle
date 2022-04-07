@@ -1,0 +1,38 @@
+[
+  {
+    "fullWord": {
+      "state": "WWWCW",
+      "word": "VOGEL"
+    }
+  },
+  {
+    "fullWord": {
+      "state": "NNNNN",
+      "word": "_____"
+    }
+  },
+  {
+    "fullWord": {
+      "state": "NNNNN",
+      "word": "_____"
+    }
+  },
+  {
+    "fullWord": {
+      "state": "NNNNN",
+      "word": "_____"
+    }
+  },
+  {
+    "fullWord": {
+      "state": "NNNNN",
+      "word": "_____"
+    }
+  },
+  {
+    "fullWord": {
+      "state": "NNNNN",
+      "word": "_____"
+    }
+  }
+]

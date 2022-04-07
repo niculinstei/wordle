@@ -23,6 +23,5 @@ public class LetterActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         wordleView.setLetter(wordleModel.setNextLetter(anyTextOfButton));
-
     }
 }

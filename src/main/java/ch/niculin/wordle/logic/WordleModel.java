@@ -4,7 +4,6 @@ import ch.niculin.wordle.persistence.StatePersistence;
 import ch.niculin.wordle.persistence.WordListImporter;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WordleModel {
@@ -13,47 +12,11 @@ public class WordleModel {
     WordCheckerImpl wordChecker;
     StatePersistence statePersistence = new StatePersistence();
 
-
     public WordleModel() {
         File file = new File("list.txt");
         wordList = new WordListImporter().getWordListFromFile(file);
-        //TODO model muss mit der Persistzenz kommunizieren
         wordChecker = new WordCheckerImpl(wordList);
         this.words = new StatePersistence().loadState();
-    }
-
-    public Word getRow1() {
-        return rateCurrentWord(words.getWordAt(1));
-    }
-
-    public Word getRow2() {
-        return rateCurrentWord(words.getWordAt(2));
-    }
-
-    public Word getRow3() {
-        return rateCurrentWord(words.getWordAt(3));
-    }
-
-    public Word getRow4() {
-        return rateCurrentWord(words.getWordAt(4));
-    }
-
-    public Word getRow5() {
-        return rateCurrentWord(words.getWordAt(5));
-    }
-
-    public Word getRow6() {
-        return rateCurrentWord(words.getWordAt(6));
-    }
-
-    public List<Word> getRowsToColour() {
-        List<Word> rowsToColour = new ArrayList<>();
-        for (Word word : words.getWords()){
-            if (word.isWordValid()){
-                rowsToColour.add(word);
-            }
-        }
-        return rowsToColour;
     }
 
     public Letter setNextLetter(String letterToFill) {
@@ -78,28 +41,31 @@ public class WordleModel {
     }
 
     public Word rateCurrentWord(Word word) {
-        wordChecker.checkUserWordInput(word);
+        var word1 = wordChecker.checkUserWordInput(word);
+        Word word2 = words.getWords().get(Position.getInstance().getRound() - 1);
+        for (int i = 0; i < word2.getWordLetter().size(); i++){
+            word2.getWordLetter().get(i).setState(word1.getWordStates().get(i));
+        }
+        return word1;
+    }
+
+    public void save() {
         statePersistence.saveState(words);
-        return word;
     }
 
     public boolean gameCanContinue() {
-        if (!Position.getInstance().plusOneRound()) {
-            return true;
-        } else {
-            Position.getInstance().resetPosition();
-            return false;
-
-        }
+        return Position.getInstance().getRound() <= 6;
     }
 
-    public boolean IsWordTheSolution(Word word) {
-        if (wordChecker.checkSuccess(word)) {
+    public boolean gameCanContinueForListener() {
+        if (Position.getInstance().plusOneRound()) {
+            Position.getInstance().resetPosition();
             return true;
-        } else {
-            return false;
-        }
+        } else return false;
+    }
 
+    public boolean IsWordTheSolutionInverted(Word word) {
+        return !wordChecker.checkSuccess(word);
     }
 
     private Letter getCurrentLetter() {
@@ -125,16 +91,18 @@ public class WordleModel {
     }
 
     private boolean validateWordIsInList(Word word) {
-        return wordList.contains(word.getWordVolumeAsString());
+        return wordList.contains(word.getWordAsString());
     }
 
     public List<String> getWordList() {
         return wordList;
     }
 
-
-    //TODO erkennen wan gewonnen
     public boolean isWinScreen() {
-        return false;
+        return words.getWordsAsListOfStrings().contains(wordChecker.getSolution().getSolution());
+    }
+
+    public Words getWords() {
+        return words;
     }
 }

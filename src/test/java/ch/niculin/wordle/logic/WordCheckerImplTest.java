@@ -21,14 +21,14 @@ class WordCheckerImplTest {
     @Test
     void success(){
         Word word = new Word(solution.getSolution().toUpperCase(Locale.ROOT));
-        boolean condition = wordChecker.checkUserWordInput(word).getWordVolumeAsString().equals(solution.getSolution().toUpperCase(Locale.ROOT));
+        boolean condition = wordChecker.checkUserWordInput(word).getWordAsString().equals(solution.getSolution().toUpperCase(Locale.ROOT));
         assertTrue(condition);
     }
 
     @Test
     void invalidSuccess(){
         Word word = new Word("VOGEL");
-        boolean condition = wordChecker.checkUserWordInput(word).getWordVolumeAsString().equals(solution.toString().toUpperCase(Locale.ROOT));
+        boolean condition = wordChecker.checkUserWordInput(word).getWordAsString().equals(solution.toString().toUpperCase(Locale.ROOT));
         assertFalse(condition);
     }
 }

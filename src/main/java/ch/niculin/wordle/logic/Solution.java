@@ -3,8 +3,8 @@ package ch.niculin.wordle.logic;
 import java.time.LocalDate;
 
 public class Solution {
-    private  String solution;
-    private  LocalDate date;
+    private String solution;
+    private final LocalDate date;
 
     public Solution(String solution, LocalDate date) {
         this.solution = solution;

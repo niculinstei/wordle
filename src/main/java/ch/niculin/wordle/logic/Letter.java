@@ -9,7 +9,6 @@ public class Letter {
         this.letter = letter;
     }
 
-
     public State getState() {
         return state;
     }

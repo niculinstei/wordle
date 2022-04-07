@@ -59,7 +59,7 @@ public class Word {
         return !getWordStates().contains(State.WRONG) && !getWordStates().contains(State.SEMI_CORRECT) && !getWordStates().contains(State.NOTHING);
     }
 
-    public String getWordVolumeAsString() {
+    public String getWordAsString() {
         return String.join("", getWordVolume());
     }
 
@@ -71,7 +71,7 @@ public class Word {
         }
         return true;*/
 
-        return word.stream().allMatch(Letter::isValid);
+        return !word.stream().allMatch(Letter::isValid);
     }
 
     @Override

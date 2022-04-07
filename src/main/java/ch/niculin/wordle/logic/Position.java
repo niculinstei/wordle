@@ -23,19 +23,19 @@ public class Position {
     }
 
     public void moveForward() {
-        if (position < 4 && nextPosition > 0){
+        if (position < 4 && nextPosition > 0) {
             position++;
         }
-        if (nextPosition < 4){
+        if (nextPosition < 4) {
             nextPosition++;
         }
     }
 
     public void moveBackward() {
-        if (position < 3 && nextPosition > 0){
+        if (position < 3 && nextPosition > 0) {
             nextPosition--;
         }
-        if (position > 0){
+        if (position > 0) {
             position--;
         }
     }
@@ -75,9 +75,9 @@ public class Position {
     private int calculateRound() {
         int emptyWords = 0;
         int round;
-        Words state =  new StatePersistence().loadState();
-        for (Word word : state.getWords()){
-            if (!word.isWordValid()){
+        Words state = new StatePersistence().loadState();
+        for (Word word : state.getWords()) {
+            if (word.isWordValid()) {
                 emptyWords++;
             }
         }
@@ -85,7 +85,5 @@ public class Position {
         round = 7 - emptyWords;
 
         return round;
-
-
     }
 }
